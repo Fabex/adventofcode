@@ -1,0 +1,7 @@
+{
+    "name": "fabex/aoc2020",
+    "type": "project",
+    "require": {
+        "symfony/var-dumper": "^5.2"
+    }
+}
