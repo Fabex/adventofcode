@@ -12,11 +12,14 @@ foreach ($results[1] as $key => $inst) {
 
 function executeCmd(array &$instructions, int $acc, int $pointer, array $history = [], bool $modified = false)
 {
+    if (!isset($instructions[$pointer])) {
+        throw new DomainException($acc);
+    }
     $cmd = $instructions[$pointer]['cmd'];
     $value = $instructions[$pointer]['value'];
     $currentPointer = $nextPointer = $pointer;
-    if (in_array($pointer, $history)) {
-        throw new Exception($acc);
+    if (in_array($pointer, $history, true)) {
+        throw new RuntimeException($acc);
     }
     $history[] = $pointer;
     switch ($cmd) {
@@ -40,11 +43,33 @@ $acc = 0;
 $pointer = 0;
 try {
     [$acc, $pointer] = executeCmd($instructions, $acc, $pointer);
-    dump($acc);
-    dump('rrr');
-} catch (Exception $exception) {
+} catch (RuntimeException $exception) {
     dump($exception->getMessage());
-    dump('aaa');
+}
+$programs = [];
+foreach ($instructions as $key => $instruction) {
+    $cmd = $instruction['cmd'];
+    if ($cmd === 'jmp') {
+        $modified = $instructions;
+        $modified[$key]['cmd'] = 'nop';
+        $programs[] = $modified;
+    }
+    if ($cmd === 'nop') {
+        $modified = $instructions;
+        $modified[$key]['cmd'] = 'jmp';
+        $programs[] = $modified;
+    }
+}
+
+$accStep2 = 0;
+$pointerStep2 = 0;
+foreach ($programs as $program) {
+    try {
+        [$accStep2, $pointerStep2] = executeCmd($program, $accStep2, $pointerStep2);
+    } catch (RuntimeException $exception) {
+    } catch (DomainException $exception) {
+        dump($exception->getMessage());
+    }
 }
 
 die('hard');
