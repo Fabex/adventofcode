@@ -20,10 +20,11 @@ $the25 = array_slice($data, 0, 25);
 $others = array_slice($data, 25);
 $sums = calcSum($the25);
 
+$invalidNumber = 0;
 for ($i = 25, $iMax = count($data); $i <= $iMax; $i++) {
     $number = (int) $data[$i];
     if (false === in_array($number, $sums)) {
-        dump($number);
+        $invalidNumber = $number;
         break;
     }
     $the25 = array_slice($data, $i-25+1, 25);
@@ -31,10 +32,20 @@ for ($i = 25, $iMax = count($data); $i <= $iMax; $i++) {
     $sums = calcSum($the25);
 }
 
+$data = array_filter($data, function($item) use ($invalidNumber) {
+    return $item < $invalidNumber;
+});
 
-die('hard');
+$step2 = [];
+for ($start = 0, $startMax = count($data); $start < $startMax; $start++) {
+    for ($end = 1, $endMax = count($data); $end < $endMax; $end++) {
+        $sum = array_sum($t = array_slice($data, $start, $end));
+        if($sum === $invalidNumber) {
+            $step2 = $t;
+            break 2;
+        }
+    }
+}
 
-//dump($the25);
-//dump($others);
-
-die('hard');
+dump($invalidNumber);
+dump(min($step2)+max($step2));
