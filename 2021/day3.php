@@ -29,7 +29,6 @@ for ($i = 0; $i < $nbBits; $i++) {
     }
     if (count($keep) === 1) {
         $ox = array_pop($keep);
-        dump('ox', $ox);
         break;
     }
 }
@@ -52,7 +51,6 @@ for ($i = 0; $i < $nbBits; $i++) {
     }
     if (count($keep) === 1) {
         $co2 = array_pop($keep);
-        dump($co2);
         break;
     }
 }
