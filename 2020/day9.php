@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $data = file('day9.txt', FILE_IGNORE_NEW_LINES);
 

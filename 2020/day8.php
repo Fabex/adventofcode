@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $fileContent = file_get_contents('day8.txt');
 $results = [];

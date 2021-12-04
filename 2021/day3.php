@@ -1,5 +1,6 @@
 <?php
-require '../2020/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
+
 $lines = file('day3.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 array_walk($lines, static fn(&$line) => $line = str_split($line));
 

@@ -1,5 +1,6 @@
 <?php
-require '../2020/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
+
 $data = file('day4.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 $numbers = explode(',', array_shift($data));

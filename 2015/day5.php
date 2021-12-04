@@ -1,5 +1,5 @@
 <?php
-require '../2020/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $strings = file('day5.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
