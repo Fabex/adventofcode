@@ -39,6 +39,9 @@ function foldHorizontaly(array &$map, int $y)
     $top = array_slice($map, 0, $y);
     $bottom = array_slice($map, $y + 1);
     $bottom = array_reverse($bottom);
+    if (count($top) > count($bottom)) {
+        array_unshift($bottom, array_fill(0, count($top[0]), ' '));
+    }
     foreach ($top as $idx => $line) {
         foreach ($line as $x => $v) {
             $top[$idx][$x] = $v === '#' ? '#' : (isset($bottom[$idx][$x]) && $bottom[$idx][$x] === '#' ? '#' : ' ');
@@ -63,8 +66,7 @@ function foldVerticaly(mixed &$map, int $x)
 
     $map = $result;
 }
-
-for ($i = 0, $iMax = 1; $i < $iMax; $i++) {
+for ($i = 0, $iMax = count($folds); $i < $iMax; $i++) {
     $fold = $folds[$i];
     if ($fold['axe'] === 'y') {
         foldHorizontaly($map, $fold['value']);
@@ -72,4 +74,5 @@ for ($i = 0, $iMax = 1; $i < $iMax; $i++) {
     }
     foldVerticaly($map, $fold['value']);
 }
+echo implode("\n", array_map(static fn($item) => implode('', $item), $map)) . "\n";
 dump(substr_count(implode(array_map(static fn($item) => implode('', $item), $map)), '#'));
