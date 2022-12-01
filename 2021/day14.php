@@ -11,23 +11,59 @@ foreach ($lines as $line) {
     $pairInsertion[$key] = $value;
 }
 
-for ($i = 0; $i < 10; $i++) {
-    $templateSplit = str_split($template);
-    $count = count($templateSplit);
-    $new = '';
-    for ($j = 0; $j < $count - 1; $j++) {
-        $pair = $templateSplit[$j] . $templateSplit[$j + 1];
-        if ($j === 0) {
-            $new .= $templateSplit[$j] . $pairInsertion[$pair] . $templateSplit[$j + 1];
-            continue;
-        }
-        $new .= $pairInsertion[$pair] . $templateSplit[$j + 1];
+$templateSplit = str_split($template);
+$count = count($templateSplit);
+$pairs = [];
+for ($j = 0; $j < $count - 1; $j++) {
+    $pair = $templateSplit[$j] . $templateSplit[$j + 1];
+    if (!array_key_exists($pair, $pairs)) {
+        $pairs[$pair] = 1;
+        continue;
     }
-    $template = $new;
+    $pairs[$pair]++;
 }
-$occ = [];
-foreach (count_chars($template, 1) as $i => $val) {
-    $occ[chr($i)] = $val;
+
+dump($pairs);
+die('hard');
+for ($i = 0; $i < 10; $i++) {
+    $workPairs = $pairs;
+    foreach ($pairs as $pair => $value) {
+        if ($value === 0) {continue;}
+        $t = $pairInsertion[$pair];
+        $newPair1 = $pair[0] . $t;
+        $newPair2 = $t.$pair[1];
+
+        if (!array_key_exists($newPair1, $workPairs)) {
+            $workPairs[$newPair1] = 1;
+        } else {
+            $workPairs[$newPair1]++;
+        }
+        if (!array_key_exists($newPair2, $workPairs)) {
+            $workPairs[$newPair2] = 1;
+        } else {
+            $workPairs[$newPair2]++;
+        }
+        $workPairs[$pair]--;
+
+    }
+    $pairs = $workPairs;
 }
-asort($occ);
-dump(array_pop($occ) - array_shift($occ));
+dump($pairs);
+$step2 = [];
+foreach ($pairs as $pair => $value) {
+    $letter1 = $pair[0];
+    $letter2 = $pair[1];
+    if (!array_key_exists($letter1, $step2)) {
+        $step2[$letter1] = $value;
+    } else {
+        $step2[$letter1] += $value;
+    }
+    if (!array_key_exists($letter2, $step2)) {
+        $step2[$letter2] = $value;
+    } else {
+        $step2[$letter2] += $value;
+    }
+}
+
+dump($step2);
+die('hard');
