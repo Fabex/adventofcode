@@ -14,20 +14,30 @@ type stack struct {
 }
 
 func main() {
+	model, _ := strconv.Atoi(os.Args[1])
 	data, _ := os.ReadFile("./data.txt")
 	ar := strings.Split(string(data), "\n")
-
 	stacks := initEmptyStacks(ar)
 	fillStack(ar, &stacks)
+	rearrange(ar, stacks, model)
+	printResult(stacks)
+}
 
+func printResult(stacks map[string]*stack) {
+	result := ""
+	for i := 0; i < len(stacks); i++ {
+		result += stacks[fmt.Sprint(i+1)].Crates[0:1]
+	}
+	fmt.Println(result)
+}
+
+func rearrange(ar []string, stacks map[string]*stack, model int) {
 	for _, line := range ar {
 		if line == "" || line[0:1] != "m" {
 			continue
 		}
-		printStack(stacks)
-		fmt.Println(line)
-		rMove, _ := regexp.Compile("[1-9]")
-		rMoveResult := rMove.FindAllString(line, 3)
+		rMove, _ := regexp.Compile("[0-9]+")
+		rMoveResult := rMove.FindAllString(line, 10)
 		number, _ := strconv.Atoi(rMoveResult[0])
 		from := rMoveResult[1]
 		to := rMoveResult[2]
@@ -35,19 +45,19 @@ func main() {
 			number = len(stacks[from].Crates)
 		}
 
-		slice := reverse(stacks[from].Crates[0:number])
+		slice := stacks[from].Crates[0:number]
+		if model == 9000 {
+			slice = reverse(slice)
+		}
 		stacks[from].Crates = stacks[from].Crates[number:]
 		stacks[to].Crates = slice + stacks[to].Crates
-		printStack(stacks)
 	}
-
-	//printStack(stacks)
 }
 
 func printStack(stacks map[string]*stack) {
 	fmt.Println("-------------------------------------")
-	for idx, stack := range stacks {
-		fmt.Println("idx : " + idx + " -- crates : " + *&stack.Crates)
+	for i := 0; i < len(stacks); i++ {
+		fmt.Printf("idx: %d -- crates : %q\n", i+1, stacks[fmt.Sprint(i+1)].Crates)
 	}
 	fmt.Println("-------------------------------------")
 }
