@@ -32,8 +32,9 @@ func printResult(stacks map[string]*stack) {
 }
 
 func rearrange(ar []string, stacks map[string]*stack, model int) {
-	for _, line := range ar {
-		if line == "" || line[0:1] != "m" {
+	for i := 10; i < len(ar); i++ {
+		line := ar[i]
+		if line == "" {
 			continue
 		}
 		rMove, _ := regexp.Compile("[0-9]+")
@@ -52,14 +53,6 @@ func rearrange(ar []string, stacks map[string]*stack, model int) {
 		stacks[from].Crates = stacks[from].Crates[number:]
 		stacks[to].Crates = slice + stacks[to].Crates
 	}
-}
-
-func printStack(stacks map[string]*stack) {
-	fmt.Println("-------------------------------------")
-	for i := 0; i < len(stacks); i++ {
-		fmt.Printf("idx: %d -- crates : %q\n", i+1, stacks[fmt.Sprint(i+1)].Crates)
-	}
-	fmt.Println("-------------------------------------")
 }
 
 func fillStack(ar []string, stacks *map[string]*stack) {
@@ -83,16 +76,11 @@ func fillStack(ar []string, stacks *map[string]*stack) {
 
 func initEmptyStacks(ar []string) map[string]*stack {
 	crates := make(map[string]*stack)
-	for _, line := range ar {
-		if line == "" {
-			break
-		}
-		rStackNumber, _ := regexp.Compile("[0-9]")
-		rStackNumberResult := rStackNumber.FindAllStringIndex(line, 10)
-		if len(rStackNumberResult) > 0 {
-			for i, v := range rStackNumberResult {
-				crates[strconv.Itoa(i+1)] = createStack(v[0] + v[1])
-			}
+	rStackNumber, _ := regexp.Compile("[1-9]")
+	rStackNumberResult := rStackNumber.FindAllStringIndex(ar[8], 10)
+	if len(rStackNumberResult) > 0 {
+		for i, v := range rStackNumberResult {
+			crates[strconv.Itoa(i+1)] = createStack(v[0] + v[1])
 		}
 	}
 
