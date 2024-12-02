@@ -7,14 +7,6 @@ import (
 	"strings"
 )
 
-type direction int
-
-const (
-	ascending direction = iota
-	descending
-	undetermined
-)
-
 func main() {
 	input, _ := os.ReadFile("data.txt")
 	lines := strings.Split(string(input), "\n")
@@ -36,8 +28,7 @@ func main() {
 		if len(report) == 0 {
 			continue
 		}
-		safe := true
-		safe = isReportSafe(report)
+		safe := isReportSafe(report)
 		if safe {
 			totalSafePart1++
 		} else {
@@ -84,6 +75,15 @@ func isReportSafe(report []int) bool {
 }
 
 // my solution
+
+//type direction int
+//
+//const (
+//	ascending direction = iota
+//	descending
+//	undetermined
+//)
+//
 //func isReportSafe(report []int) bool {
 //	dir := undetermined
 //	for i := 0; i < len(report)-1; i++ {
