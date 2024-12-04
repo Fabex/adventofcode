@@ -43,8 +43,3 @@ func main() {
 	fmt.Printf("Part 2: %d\n", resultPart2)
 
 }
-
-//881592 to low
-//8469785 to low
-//87815398 to low
-//88811886
